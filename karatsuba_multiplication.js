@@ -2,43 +2,74 @@
 
 G_X="123456"
 G_Y="456789"
+let rec = ""
+
+function isOdd(num) {
+    switch (num % 2) {
+        case 0:
+            return false;
+        case 1:
+            return true;
+    }
+}
 
 function karatsuba_mult(x, y) {
-    // if (parseInt(x, 10) < 10 || parseInt(y, 10) < 10) {
-    if (x.length == 1 || y.length == 1) {
-        x = parseInt(x, 10);
-        y = parseInt(y, 10);
-        // console.log(x * y);
-        return (x * y);
+    let zero_count = 0;
+    
+    if (x.length <= 2 || y.length <= 2) {
+        rec.length--;
+        return (parseInt(x, 10) * parseInt(y, 10));
+    }
+
+    rec = rec + " ";
+
+    if (isOdd(x.length)) {
+        x = x.concat("0");
+        zero_count++;
+    }
+    if (isOdd(y.length)) {
+        y = y.concat("0");
+        zero_count++;
     }
 
     let n = Math.max(x.length, y.length);
-    let n_div_2 = Math.floor(x.length / 2);
+    let n_div_2 = Math.floor(n / 2);
 
     /* X split */
     let a = x.toString().slice(0, n_div_2);
-    let b = x.toString().slice(n_div_2, x.length);
+    let b = x.toString().slice(n_div_2, n);
     /* Y split */
     let c = y.toString().slice(0, n_div_2);
-    let d = y.toString().slice(n_div_2, y.length);
+    let d = y.toString().slice(n_div_2, n);
 
-    console.log("a = " + a + " b = " + b + " c = " + c + " d = " + d);
+    console.log(rec + "x = " + x + " y = " + y);
+    console.log(rec + "a = " + a + " b = " + b + " c = " + c + " d = " + d + " n = " + n + " n_div_2 = " + n_div_2);
+    console.log(rec + "a* = " + (parseInt(a, 10) * Math.pow(10, n_div_2)) +
+                " b = " + b +
+                " c* = " + (parseInt(c, 10) * Math.pow(10, n_div_2)) +
+                " d = " + d);
 
     let ac = karatsuba_mult(a, c);
     let bd = karatsuba_mult(b, d);
     let a_plus_b = parseInt(a, 10) + parseInt(b, 10);
     let c_plus_d = parseInt(c, 10) + parseInt(d, 10);
     let middle = karatsuba_mult(a_plus_b.toString(), c_plus_d.toString()) - ac - bd;
-    let res = ac * Math.pow(10, n) + middle * Math.pow(10, n_div_2) + bd;
+    let res = ac * Math.pow(10, n_div_2 * 2) + middle * Math.pow(10, n_div_2) + bd;
+    res = res.toString();
+    res = res.slice(0, res.length - zero_count);
+    res = parseInt(res, 10);
 
     // let z0 = karatsuba_mult(b, d);
     // let a_plus_b = parseInt(a, 10) + parseInt(b, 10);
     // let c_plus_d = parseInt(c, 10) + parseInt(d, 10);
     // let z1 = karatsuba_mult(a_plus_b.toString(), c_plus_d.toString());
     // let z2 = karatsuba_mult(a, c);
-
     // let res = (z2 * Math.pow(10, n_div_2 * 2)) + ((z1 - z2 - z0) * Math.pow(10, n_div_2)) + z0
 
+    console.log(rec + "res = " + res);
+
+
+    rec.length--;
     return (res);
 }
 
