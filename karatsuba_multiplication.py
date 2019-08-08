@@ -50,7 +50,7 @@ def karatsuba_mult(x, y):
     return res
 
 first = int(input('Enter first number: '), 10)
-second = int(input('Enter second number:'), 10)
+second = int(input('Enter second number: '), 10)
 
 res = karatsuba_mult(str(first), str(second))
 
