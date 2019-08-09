@@ -1,34 +1,34 @@
 import math
 import sys
 
+
 def isOdd(num):
     if (num % 2 == 0):
         return False
     else:
         return True
 
-def karatsuba_mult(x, y):
-    zero_count = 0
 
-    if (len(x) <= 4 or len(y) <= 4):
+def isPowerOfTwo(x):
+    return (x != 0) and ((x & (x - 1)) == 0)
+
+
+def karatsuba_mult(x, y):
+    if (len(x) <= 1 or len(y) <= 1):
         return (int(x) * int(y))
 
+    if (len(x) < len(y)):
+        zero_count = len(y) - len(x)
+        x = ('0' * zero_count) + x
+    else:
+        zero_count = len(x) - len(y)
+        y = ('0' * zero_count) + y
+
     if (isOdd(len(x))):
-        x += '0'
-        zero_count += 1
+        x = '0' + x
+        y = '0' + y
 
-    if (isOdd(len(y))):
-        y += '0'
-        zero_count += 1
-
-    while (len(x) != len(y)):
-        if (len(x) < len(y)):
-            x += '0'
-        else:
-            y += '0'
-        zero_count += 1
-
-    n = max(len(x), len(y))
+    n = len(x)
     n2 = math.floor(n / 2)
 
     a = x[0:n2]
@@ -44,16 +44,12 @@ def karatsuba_mult(x, y):
     middle = karatsuba_mult(str(a_plus_b), str(c_plus_d)) - ac - bd
     res = ac * (10 ** (n2 * 2)) + middle * (10 ** n2) + bd
 
-    res = str(res)
-    res = 0 if (len(res) - zero_count <= 0) else res[0:len(res) - zero_count]
-    res = int(res)
-
     return res
+
 
 def main():
     first = int(input('Enter first number: '), 10)
     second = int(input('Enter second number: '), 10)
-
     res = karatsuba_mult(str(first), str(second))
 
     print(res)
