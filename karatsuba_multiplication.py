@@ -21,10 +21,11 @@ def karatsuba_mult(x, y):
         y += '0'
         zero_count += 1
 
-    smaller = x if len(x) < len(y) else y
-    bigger = x if len(x) > len(y) else y
-    while (len(smaller) < len(bigger)):
-        smaller += '0'
+    while (len(x) != len(y)):
+        if (len(x) < len(y)):
+            x += '0'
+        else:
+            y += '0'
         zero_count += 1
 
     n = max(len(x), len(y))
@@ -44,14 +45,19 @@ def karatsuba_mult(x, y):
     res = ac * (10 ** (n2 * 2)) + middle * (10 ** n2) + bd
 
     res = str(res)
-    res = res[0:len(res) - zero_count]
+    res = 0 if (len(res) - zero_count <= 0) else res[0:len(res) - zero_count]
     res = int(res)
 
     return res
 
-first = int(input('Enter first number: '), 10)
-second = int(input('Enter second number: '), 10)
+def main():
+    first = int(input('Enter first number: '), 10)
+    second = int(input('Enter second number: '), 10)
 
-res = karatsuba_mult(str(first), str(second))
+    res = karatsuba_mult(str(first), str(second))
 
-print(res)
+    print(res)
+
+if __name__ == "__main__":
+    main()
+    pass
